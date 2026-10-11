@@ -33,7 +33,7 @@ function fallbackSVG(d){
 function dayHTML(d,n,print=false){
  const items=d.items.map((i,j)=>resolved(i,j,n));
  const keys=[...new Set(d.route)];
- return `<div class="${print?'day-print':''}"><div class="day-header"><div><p class="eyebrow">DAY ${String(n+1).padStart(2,'0')} / ${d.date} ${d.week}</p><h2>${esc(d.title)}</h2><p>${esc(d.subtitle)}</p></div><div class="steps"><strong>${d.steps}</strong>预计步 / 天<p>${esc(d.km)}</p></div></div><div class="day-layout"><aside class="map-panel">${!print?`<div class="map-tools"><button id="show-map">地理地图</button><button id="show-schematic">离线示意</button></div><div class="map-box"><div class="map-fallback" id="map-fallback">${fallbackSVG(d)}<ol class="route-list">${keys.map((k,j)=>`<li>${j+1}. ${esc(place(k).name)}</li>`).join('')}</ol></div><div id="map"></div></div><p class="map-caption">红色连线为地点顺序示意，并非真实轨道或步行路径。点击数字看地点；实际交通请打开每段导航并设置出行日期 / 时间。地图底图需联网，无法加载可切换离线示意。</p>`:''}<div class="route-strip">${d.route.map((k,j)=>`<span>${j?'→ ':''}${esc(place(k).name)}</span>`).join('')}</div><div class="side-note"><h3>今晚住哪里</h3><p>${esc(d.stay)}</p></div><div class="side-note"><h3>下雨 / 停运怎么办</h3><p>${esc(d.weather)}</p></div><div class="notice">${esc(d.note)}</div></aside><div class="timeline">${items.map(stopHTML).join('')}</div></div></div>`;
+ return `<div class="${print?'day-print':''}"><div class="day-header"><div><p class="eyebrow">DAY ${String(n+1).padStart(2,'0')} / ${d.date} ${d.week}</p><h2>${esc(d.title)}</h2><p>${esc(d.subtitle)}</p></div><div class="steps"><strong>${d.steps}</strong>预计步 / 天<p>${esc(d.km)}</p></div></div><div class="day-layout"><aside class="map-panel">${!print?`<div class="map-tools"><button id="show-map">地理地图</button><button id="show-local">近看景点</button><button id="show-schematic">离线示意</button></div><div class="map-box"><div class="map-fallback" id="map-fallback">${fallbackSVG(d)}<ol class="route-list">${keys.map((k,j)=>`<li>${j+1}. ${esc(place(k).name)}</li>`).join('')}</ol></div><div id="map"></div></div><p class="map-caption">红色连线为地点顺序示意，并非真实轨道或步行路径。点击数字看地点；实际交通请打开每段导航并设置出行日期 / 时间。地图底图需联网，无法加载可切换离线示意。</p>`:''}<div class="route-strip">${d.route.map((k,j)=>`<span>${j?'→ ':''}${esc(place(k).name)}</span>`).join('')}</div><div class="side-note"><h3>今晚住哪里</h3><p>${esc(d.stay)}</p></div><div class="side-note"><h3>下雨 / 停运怎么办</h3><p>${esc(d.weather)}</p></div><div class="notice">${esc(d.note)}</div></aside><div class="timeline">${items.map(stopHTML).join('')}</div></div></div>`;
 }
 function updateProgress(){
  const count=DAYS[selected].items.reduce((n,_,i)=>n+(done[`${selected}-${i}`]?1:0),0);
@@ -56,7 +56,8 @@ function render(){
  $('#day-content').innerHTML=dayHTML(DAYS[selected],selected);
  drawMap();updateProgress();
  $('#show-schematic').onclick=()=>{$('#map').hidden=true;};
- $('#show-map').onclick=()=>{if(map){$('#map').hidden=false;map.invalidateSize();}};
+ $('#show-local').onclick=()=>{if(!map)return;$('#map').hidden=false;map.invalidateSize();const groups=[['tokyo','ginza','eel'],['onsen','temple','bamboo','niji','sora'],['kogen','omuro','kira'],['kogen','jogasaki','bridge','tuna'],['tokyo','sushi']];map.fitBounds(L.latLngBounds(groups[selected].map(k=>place(k).ll)).pad(.2),{maxZoom:15});};
+ $('#show-map').onclick=()=>{if(map){$('#map').hidden=false;map.invalidateSize();map.fitBounds(L.latLngBounds(DAYS[selected].route.map(k=>place(k).ll)).pad(.18),{maxZoom:14});}};
 }
 $('#days').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selected=Number(b.dataset.day);render();});
 $('#airport').addEventListener('change',e=>{airport=e.target.value;render();});

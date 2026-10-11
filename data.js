@@ -1,6 +1,6 @@
 // All clock times are Japan local time; transport slots are planning windows, not booked services.
 const PLACES = {
- HND:{name:'羽田机场',q:'Haneda Airport Terminal 3',ll:[35.544,139.768]}, NRT:{name:'成田机场',q:'Narita International Airport',ll:[35.772,140.393]},
+ HND:{name:'羽田机场',q:'Haneda Airport',ll:[35.544,139.768]}, NRT:{name:'成田机场',q:'Narita International Airport',ll:[35.772,140.393]},
  tokyo:{name:'东京站',q:'Tokyo Station Yaesu',ll:[35.681,139.768]}, shinagawa:{name:'品川站',q:'Shinagawa Station',ll:[35.628,139.739]}, ginza:{name:'银座',q:'Ginza Tokyo',ll:[35.671,139.765]},
  eel:{name:'银座备长鳗鱼饭',q:'ひつまぶし 名古屋 備長 マロニエゲート銀座1店',ll:[35.674,139.766]}, steak:{name:'銀座のステーキ 銀座本店',q:'Ginza Steak Ginza Honten',ll:[35.6676,139.7601]}, sushi:{name:'すしざんまい 本店',q:'Sushizanmai Honten Tsukiji',ll:[35.665,139.770]},
  mishima:{name:'三岛站',q:'Mishima Station',ll:[35.127,138.911]}, shuzenjiSt:{name:'修善寺站',q:'Shuzenji Station',ll:[34.979,138.950]}, onsen:{name:'修善寺温泉站',q:'修善寺温泉 バス停',ll:[34.972,138.930]},
